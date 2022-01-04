@@ -37,8 +37,8 @@ class TodoList extends React.Component<Prop,State>{
             }
         }
     }
-    saveValue=()=>{
-        if(this.state.title.length>4 && this.state.description.length>0 && this.state.status.length>0 && /[a-zA-Z0-9]/.test(this.state.title)){          
+    saveValue= ()=>{
+        if(this.state.title.length>4 && this.state.description.length>0  && /[a-zA-Z0-9]/.test(this.state.title)){          
         if(this.state.editIndex > -1){
             const currentData: any[] = this.state.data;
             currentData[this.state.editIndex] = {
@@ -53,6 +53,7 @@ class TodoList extends React.Component<Prop,State>{
                 description:'',
                 status:''
             })
+            
             localStorage.setItem('data',JSON.stringify(currentData));
         }else{
             this.setState({
@@ -63,6 +64,7 @@ class TodoList extends React.Component<Prop,State>{
                });
                localStorage.setItem('data',JSON.stringify(this.state.data.concat({title:this.state.title,description:this.state.description,status:this.state.status})));
         }
+        
         }
     }
 
@@ -84,6 +86,9 @@ class TodoList extends React.Component<Prop,State>{
     });
     localStorage.setItem('data',JSON.stringify(originalValueOfdata));
      }
+     retriveDataInTestFile=()=>{
+         return this.state.data;
+     }
     render(){
         return(
            <div className='parentDiv'>
@@ -91,13 +96,13 @@ class TodoList extends React.Component<Prop,State>{
             <Table>
                 <TableRow>
                     <TableCell><InputLabel>Title:</InputLabel></TableCell>
-                    <TableCell> <Input required name="title" type="text" value={this.state.title} onChange={(e)=>this.setState({
+                    <TableCell> <Input data-testid="input" name="title" type="text" value={this.state.title} onChange={(e)=>this.setState({
                         title:e.target.value
                     })}/></TableCell>
                 </TableRow>
                 <TableRow>
                     <TableCell><InputLabel>Description:</InputLabel></TableCell>
-                    <TableCell><TextareaAutosize minRows={6} name="description" value={this.state.description} onChange={(e)=>this.setState({
+                    <TableCell><TextareaAutosize data-testid="textarea" minRows={6} name="description" value={this.state.description} onChange={(e)=>this.setState({
                        description:e.target.value 
                     })}/></TableCell>
                 </TableRow>
@@ -105,11 +110,11 @@ class TodoList extends React.Component<Prop,State>{
                     <TableCell><InputLabel>Status:</InputLabel></TableCell>
                     <TableCell>
                       <FormControl fullWidth>
-                      <InputLabel id="status-id">Status</InputLabel>
-                        <Select label="Status" id="status-id" value={this.state.status} onChange={(e:any) =>this.setState({
+                      <InputLabel data-testid="status-id">Status</InputLabel>
+                        <Select label="status" data-testid="statusId" value={this.state.status} onChange={(e:any) =>this.setState({
                             status:e.target.value
                         })}>
-                            <MenuItem value="ToDo">ToDo</MenuItem>
+                            <MenuItem value="ToDo" data-testid="second">ToDo</MenuItem>
                             <MenuItem value="InProcess">InProcess</MenuItem>
                             <MenuItem value="Complete">Complete</MenuItem>
                         </Select>
@@ -118,7 +123,7 @@ class TodoList extends React.Component<Prop,State>{
                 </TableRow>
                 <TableRow>
                     <TableCell colSpan={2} align='center'>
-                        <Button variant="contained"  color="primary" onClick={this.saveValue}>{this.state.editIndex > -1 ? 'Update' : 'Add'}</Button>
+                        <Button variant="contained" data-testid="save" color="primary" onClick={this.saveValue}>{this.state.editIndex > -1 ? 'Update' : 'Add'}</Button>
                     </TableCell>
                 </TableRow>
             </Table>
@@ -142,12 +147,12 @@ class TodoList extends React.Component<Prop,State>{
                             <TableCell>{items.description}</TableCell>
                             <TableCell>{items.status}</TableCell>
                             <TableCell>
-                                <Button variant="contained"  onClick={()=>this.editValue(index)}>
+                                <Button variant="contained" data-testid="edit" onClick={()=>this.editValue(index)}>
                                     Edit
                                 </Button>
                             </TableCell>
                             <TableCell>
-                                <Button variant="contained" onClick={()=>this.deleteValue(index)}>
+                                <Button variant="contained" data-testid="deleteData" onClick={()=>this.deleteValue(index)}>
                                     Delete
                                 </Button>
                             </TableCell>
